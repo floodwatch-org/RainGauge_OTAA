@@ -64,6 +64,8 @@ uint64_t spendTime; // the remaining time before wake up in period OTAA
 bool bucketPositionA = false; // one of the two positions of tipping-bucket
 // const double bucketAmount = 0.01610595;   // inches equivalent of ml to trip tipping-bucket
 //#define ABP_PERIOD   (1800000) //  sleep cycle 30m
+uint16_t maskBuff = 0x0002;
+
 #define OTAA_PERIOD   (360000) //  sleep cycle 3m
 
 //time in case of heavy rain.
@@ -177,6 +179,13 @@ void setup()
       Serial.printf("LoRaWan OTAA - set band is incorrect! \r\n");
       return;
   }
+
+   //set mask
+  if(!api.lorawan.mask.set(&maskBuff)){
+    Serial.printf("LoRaWan OTAA - set Mask channel incorrect \r\n");
+    return;
+  }
+   
   if (!api.lorawan.deviceClass.set(RAK_LORA_CLASS_A)) {
       Serial.printf("LoRaWan OTAA - set device class is incorrect! \r\n");
       return;
